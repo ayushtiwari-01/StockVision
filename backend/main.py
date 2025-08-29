@@ -14,7 +14,8 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000", 
         "http://localhost:5173",
-        "http://localhost:8080"  # Added your frontend port
+        "http://localhost:8080",
+        "https://ayush-stockvision.vercel.app"  # <-- ADDED YOUR LIVE FRONTEND URL
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -37,4 +38,4 @@ def health_check():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)  # Updated this line
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
