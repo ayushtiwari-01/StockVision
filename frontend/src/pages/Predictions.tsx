@@ -10,7 +10,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { Search, TrendingUp, TrendingDown, Save } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
-
+const apiUrl = import.meta.env.VITE_API_URL;
 interface PredictionData {
   date: string;
   predicted_return: number;
@@ -61,7 +61,7 @@ const Predictions = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`http://localhost:8000/api/predict`, {
+      const response = await fetch(`${apiUrl}/api/predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -131,7 +131,7 @@ const Predictions = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8000/api/save-result`, {
+      const response = await fetch(`${apiUrl}/api/save-result`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
