@@ -4,26 +4,19 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense
-
+import requests  # <-- ADD THIS IMPORT
 import os
 import logging
-
-# Suppress TensorFlow info messages
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-logging.getLogger('tensorflow').setLevel(logging.ERROR)
-
-# Then your existing imports
-import tensorflow as tf
-
-
-
 import warnings
 from typing import Optional, Dict, Any, List
-import logging
 
+# --- Setup Logging and Warnings ---
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # Suppress TensorFlow info messages
+logging.getLogger('tensorflow').setLevel(logging.ERROR)
 warnings.filterwarnings('ignore')
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 class StockPredictor:
     def __init__(self):
@@ -34,7 +27,13 @@ class StockPredictor:
         """Fetch stock data from Yahoo Finance"""
         try:
             logger.info(f"Fetching data for {ticker} with period {period}")
-            stock = yf.Ticker(ticker)
+
+            # FIX: Create a session with a browser header to avoid being blocked
+            session = requests.Session()
+            session.headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            
+            # Pass the session to yfinance
+            stock = yf.Ticker(ticker, session=session)
             data = stock.history(period=period, interval=interval)
             
             if data.empty:
