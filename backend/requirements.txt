@@ -1,3 +1,8 @@
+# Build tools
+setuptools
+wheel
+
+# Your packages
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
 supabase==2.0.0
